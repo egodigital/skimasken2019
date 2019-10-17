@@ -58,7 +58,8 @@ export default {
       if(this.$refs.form.validate() === false)
         return
       
-      
+      this.$store
+        .dispatch("login", { username: this.username, password: this.password })
     }
   }
 };

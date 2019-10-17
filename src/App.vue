@@ -3,7 +3,8 @@
     <v-app-bar
       app
       dark
-      color="primary">
+      color="primary"
+      v-if="isLoggedIn">
       <v-toolbar-title class="headline text-uppercase">
         <span>eGO</span>
         <span class="font-weight-light">N</span>
@@ -20,9 +21,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'App',
   components: {
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn'])
   },
   data: () => ({
     //
