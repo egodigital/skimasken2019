@@ -1,10 +1,14 @@
 <template>
   <v-app>
+    <sidebar :drawer="drawer" v-if="isLoggedIn"></sidebar>
+
     <v-app-bar
       app
       dark
+      clipped-left
       color="primary"
       v-if="isLoggedIn">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="headline text-uppercase">
         <span>eGO</span>
         <span class="font-weight-light">N</span>
@@ -19,8 +23,11 @@
         </template>
 
         <v-list>
-          <v-list-item>
-            <v-list-item-title @click="logout">Logout</v-list-item-title>
+          <v-list-item :to="{ name: 'profile' }">
+            <v-list-item-title>Profile</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="logout">
+            <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -37,13 +44,20 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Sidebar from '@/components/Sidebar'
 
 export default {
   name: 'App',
   components: {
+    Sidebar
   },
   computed: {
     ...mapGetters(['isLoggedIn'])
+  },
+  data() {
+    return {
+      drawer: false
+    };
   },
   methods: {
     logout() {
