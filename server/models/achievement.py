@@ -28,7 +28,7 @@ class AchievementModel(db.Model):
         self.level_req = level_req
         self.level_type = level_type
         self.score = score
-        self.name =name
+        self.name = name
 class AchievementSchema(ma.ModelSchema):
     class Meta:
         model = AchievementModel
