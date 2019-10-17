@@ -5,7 +5,7 @@ class DefaultConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
     TESTING = False
-    PORT = 5000
+    PORT = 3000
 
 
 class DevConfig(DefaultConfig):
