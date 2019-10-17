@@ -32,6 +32,7 @@ class BookingList(Resource):
 
     @api.expect(booking_parser)
     def post(self):
+        args = booking_parser.parse_args()
         booking = booking_schema.load(booking_parser.parse_args(), session=db.session)
         db.session.add(booking)
         db.session.commit()

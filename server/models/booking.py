@@ -13,12 +13,11 @@ booking_parser.add_argument('Fuzzy', type=bool, required=True)
 booking_parser.add_argument('car_id', type=str, required=True)
 booking_parser.add_argument('duration', type=str, required=True)
 
-
 class BookingModel(db.Model):
     APIid = db.Column(db.String, primary_key=True)
     start_time = db.Column(db.String, nullable=False)
     end_time = db.Column(db.String, nullable=False)
-    Fuzzy = db.Column(db.String, nullable=False)
+    Fuzzy = db.Column(db.Boolean, nullable=False)
     car_id = db.Column(db.String, nullable=False)
     duration = db.Column(db.String, nullable=False)
     start_time_fuzzy = db.Column(db.String, nullable=True)
