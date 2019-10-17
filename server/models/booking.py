@@ -4,14 +4,14 @@ from flask_restplus import reqparse
 
 
 booking_parser = reqparse.RequestParser()
-booking_parser.add_argument('start_time', type=str, required=True)
-booking_parser.add_argument('end_time', type=str, required=True)
-booking_parser.add_argument('start_time_fuzzy', type=str, required=False)
-booking_parser.add_argument('end_time_fuzzy', type=str, required=False)
-booking_parser.add_argument('APIid', type=str, required=True)
-booking_parser.add_argument('Fuzzy', type=bool, required=True)
-booking_parser.add_argument('car_id', type=str, required=True)
-booking_parser.add_argument('duration', type=str, required=True)
+booking_parser.add_argument('start_time', type=str, required=True, location="json")
+booking_parser.add_argument('end_time', type=str, required=True, location="json")
+booking_parser.add_argument('start_time_fuzzy', type=str, required=False, location="json")
+booking_parser.add_argument('end_time_fuzzy', type=str, required=False, location="json")
+booking_parser.add_argument('APIid', type=str, required=True, location="json")
+booking_parser.add_argument('Fuzzy', type=bool, required=True, location="json")
+booking_parser.add_argument('car_id', type=str, required=True, location="json")
+booking_parser.add_argument('duration', type=str, required=True, location="json")
 
 class BookingModel(db.Model):
     APIid = db.Column(db.String, primary_key=True)
