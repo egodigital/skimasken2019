@@ -6,7 +6,11 @@ import sys
 import logging
 import logging.config
 
+from server.extensions.database import db
+from server.extensions.migrate import migrate
+from server.extensions.marshmallow import ma
 from server.api import api
+from server.models import *
 
 
 def setup_logging(CONFIG_FILE, stdout=False):
@@ -29,7 +33,12 @@ def create_app(config):
     app = Flask(__name__, static_folder='build')
     log.info(f"loading flask config: {config.__name__}")
     app.config.from_object(config)
-    log.info(f"init API...")
+
+    # Extensions initialisieren
+    log.info("Initialize extensions...")
+    db.init_app(app)
+    ma.init_app(app)
+    migrate.init_app(app, db, render_as_batch=True, compare_type=True)
     api.init_app(app)
 
     # Catching all routes
