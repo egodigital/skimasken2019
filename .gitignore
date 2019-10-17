@@ -35,5 +35,5 @@ yarn-error.log*
 
 # python
 venv/
-logs/
+*.log*
 __pycache__/
