@@ -10,12 +10,12 @@
               lazy-validation
               ref="form">
               <v-text-field
-                v-model="username"
+                v-model="email"
                 label="Login"
                 name="login"
                 prepend-icon="mdi-account"
-                type="text"
-                :rules="rules.usernameRules"
+                type="email"
+                :rules="rules.emailRules"
                 required
               ></v-text-field>
 
@@ -45,10 +45,10 @@
 export default {
   data() {
     return {
-      username: "",
+      email: "",
       password: "",
       rules: {
-        usernameRules: [v => !!v || "Username is required"],
+        emailRules: [v => !!v || "Email is required"],
         passwordRules: [v => !!v || "Password is required"]
       }
     }
@@ -59,7 +59,7 @@ export default {
         return
       
       this.$store
-        .dispatch("login", { username: this.username, password: this.password })
+        .dispatch("login", { email: this.email, password: this.password })
       
       this.$router.push({ name: 'profile' })
     }

@@ -1,15 +1,33 @@
+import Vue from 'vue'
+
 export default {
   state: {
     user: JSON.parse(localStorage.getItem('user')) || null
   },
   actions: {
-    login({ commit }) {
-      const user = { name: 'test' }
-      commit('authSuccess', { user })
-      localStorage.setItem('user', JSON.stringify(user))
+    login({ commit }, userData) {
+      return new Promise((resolve, reject) => {
+        Vue.axios.post('/api/user/me/', userData)
+        .then(resp => {
+          commit('authSuccess', { user: resp.data })
+          localStorage.setItem('user', JSON.stringify(resp.data))
+
+          resolve(resp.user)
+        })
+        .catch(err => {
+          commit('authReset')
+          localStorage.removeItem('user')
+
+          reject(err)
+        })
+      })
     },
     logout({ commit }) {
-      commit('authReset')
+      Vue.axios.delete('/api/user/me/')
+      .then(() => {
+        commit('authReset')
+        localStorage.removeItem('user')
+      })
     }
   },
   mutations: {
