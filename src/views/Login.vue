@@ -60,8 +60,9 @@ export default {
       
       this.$store
         .dispatch("login", { email: this.email, password: this.password })
-      
-      this.$router.push({ name: 'profile' })
+        .then(() => {
+          this.$router.push({ name: 'profile' })
+        })
     }
   }
 };

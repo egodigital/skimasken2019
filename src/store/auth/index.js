@@ -7,7 +7,7 @@ export default {
   actions: {
     login({ commit }, userData) {
       return new Promise((resolve, reject) => {
-        Vue.axios.post('/api/user/me/', userData)
+        Vue.axios.post('/api/user/me', userData)
         .then(resp => {
           commit('authSuccess', { user: resp.data })
           localStorage.setItem('user', JSON.stringify(resp.data))
@@ -23,7 +23,7 @@ export default {
       })
     },
     logout({ commit }) {
-      Vue.axios.delete('/api/user/me/')
+      return Vue.axios.delete('/api/user/me')
       .then(() => {
         commit('authReset')
         localStorage.removeItem('user')
