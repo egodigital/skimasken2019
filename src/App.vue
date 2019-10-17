@@ -1,42 +1,31 @@
-﻿<template>
-  <div>
-    <router-view></router-view>
-  </div>
+<template>
+  <v-app>
+    <v-app-bar
+      app
+      dark
+      color="primary">
+      <v-toolbar-title class="headline text-uppercase">
+        <span>eGO</span>
+        <span class="font-weight-light">N</span>
+      </v-toolbar-title>
+    </v-app-bar>
+
+    <v-content>
+      <router-view></router-view>
+    </v-content>
+
+    <v-footer>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
 export default {
-  name: "app"
+  name: 'App',
+  components: {
+  },
+  data: () => ({
+    //
+  }),
 };
 </script>
-
-<style>
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 160px !important; /* Height of the footer */
-  padding: 0;
-}
-
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 160px; /* Set the fixed height of the footer here */
-}
-
-/* Override Bootstrap Styling */
-
-.btn-primary {
-  background-color: #025fce !important;
-}
-
-button:focus,
-button:active {
-  outline: none !important;
-  box-shadow: none !important;
-}
-</style>
