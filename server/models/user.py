@@ -9,6 +9,7 @@ user_parser.add_argument('password', type=str, required=True)
 user_parser.add_argument('user_name', type=str, required=True)
 user_parser.add_argument('environment_id', type=str, required=True)
 
+
 class UserModel(db.Model):
     email = db.Column(db.String, primary_key=True)
     name = db.Column(db.String, nullable=False)
