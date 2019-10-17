@@ -9,6 +9,7 @@ user_parser.add_argument('password', type=str, required=True, location="json")
 user_parser.add_argument('user_name', type=str, required=True, location="json")
 user_parser.add_argument('environment_id', type=str, required=True, location="json")
 
+
 class UserModel(db.Model):
     is_authenticated = db.Column(db.Boolean, nullable=False)
     email = db.Column(db.String, primary_key=True)
