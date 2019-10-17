@@ -13,8 +13,8 @@ from server.extensions.database import db
 log = logging.getLogger(__name__)
 api = Namespace('achievement assignment', description='achievement assignment related endpoints.')
 
-@api.route('/<string:email>')
-class achievement(Resource):
+@api.route('/<string:achievement_id>,<string:user_email>')
+class AchievementAssignment(Resource):
     def get(self, achievement_id, user_email):
         achievement_assignment = AchievementAssignmentModel.query.filter(AchievementAssignmentModel.achievement_id == achievement_id, AchievementAssignmentModel.user_email == user_email).first()
         return achievement_assignment_schema.dump(achievement_assignment), HTTPStatus.OK

@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 api = Namespace('achievement', description='achievement related endpoints.')
 
 @api.route('/<string:achievement_id>')
-class achievement(Resource):
+class Achievement(Resource):
     def get(self, achievement_id):
         achievement = AchievementModel.query.filter(AchievementModel.achievement_id == achievement_id).first()
         return achievement_schema.dump(achievement), HTTPStatus.OK
