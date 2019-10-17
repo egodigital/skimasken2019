@@ -22,11 +22,19 @@ def load_user(user_id):
 @api.route('/<string:email>')
 class User(Resource):
     @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
     def get(self, email):
         user = UserModel.query.filter(UserModel.email == email).first()
         return user_schema.dump(user), HTTPStatus.OK
 
     @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
     def delete(self, email):
         user = UserModel.query.filter(UserModel.email == email).first()
         if user:
@@ -37,6 +45,10 @@ class User(Resource):
 @api.route('/')
 class UserList(Resource):
     @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
     def get(self):
         env = flask_login.current_user.environment_id
         return users_schema.dump(UserModel.query.filter(UserModel.environment_id == env).all()), HTTPStatus.OK
@@ -55,19 +67,31 @@ login_parser.add_argument('password', type=str, required=True, location="json")
 @api.route('/me')
 class UserLogin(Resource):
     @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
     def get(self):
         return user_schema.dump(flask_login.current_user), HTTPStatus.OK
 
     @api.expect(login_parser)
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Authentication failed'
+    })
     def post(self):
         args = login_parser.parse_args()
-        user = UserModel.query.filter(UserModel.email == args["email"], UserModel.password == args["password"]).first()
-        if user is None:
+        user = UserModel.query.filter(UserModel.email == args["email"]).first()
+        if user is None and user.check_password(args["password"]):
             return "", HTTPStatus.UNAUTHORIZED
         flask_login.login_user(user)
         return user_schema.dump(user), HTTPStatus.OK
 
     @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
     def delete(self):
         flask_login.logout_user()
         return "", HTTPStatus.NO_CONTENT
