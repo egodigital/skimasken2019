@@ -9,6 +9,7 @@ import logging.config
 from server.extensions.database import db
 from server.extensions.migrate import migrate
 from server.extensions.marshmallow import ma
+from server.extensions.login import login_manager
 from server.api import api
 from server.models import *
 
@@ -40,6 +41,8 @@ def create_app(config):
     ma.init_app(app)
     migrate.init_app(app, db, render_as_batch=True, compare_type=True)
     api.init_app(app)
+    login_manager.init_app(app)
+
 
     # Catching all routes
     # This route is used to serve all the routes in the frontend application after deployment.
