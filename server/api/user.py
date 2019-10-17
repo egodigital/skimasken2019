@@ -2,14 +2,72 @@ import requests
 import random
 import logging
 from http import HTTPStatus
+from flask import request
 from flask_restplus import Namespace
 from flask_restplus import Resource
+from flask_restplus import reqparse
+
+from server.models.user import UserModel, user_schema, users_schema, user_parser
+from server.extensions.database import db
+from server.extensions.login import login_manager
+import flask_login
 
 log = logging.getLogger(__name__)
 api = Namespace('user', description='User related enpoints.')
 
-@api.route('/')
+@login_manager.user_loader
+def load_user(user_id):
+    return UserModel.query.filter(UserModel.email == user_id).first()
+
+@api.route('/<string:email>')
 class User(Resource):
+    @flask_login.login_required
+    def get(self, email):
+        user = UserModel.query.filter(UserModel.email == email).first()
+        return user_schema.dump(user), HTTPStatus.OK
+
+    @flask_login.login_required
+    def delete(self, email):
+        user = UserModel.query.filter(UserModel.email == email).first()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+        return "", HTTPStatus.NO_CONTENT
+
+@api.route('/')
+class UserList(Resource):
+    @flask_login.login_required
     def get(self):
-        log.info("test")
-        return "Test", HTTPStatus.OK
+        env = flask_login.current_user.environment_id
+        return users_schema.dump(UserModel.query.filter(UserModel.environment_id == env).all()), HTTPStatus.OK
+
+    @api.expect(user_parser)
+    def post(self):
+        user = user_schema.load(user_parser.parse_args(), session=db.session)
+        db.session.add(user)
+        db.session.commit()
+        return user_schema.dump(user), HTTPStatus.CREATED
+
+login_parser = reqparse.RequestParser()
+login_parser.add_argument('email', type=str, required=True, location="json")
+login_parser.add_argument('password', type=str, required=True, location="json")
+
+@api.route('/me')
+class UserLogin(Resource):
+    @flask_login.login_required
+    def get(self):
+        return user_schema.dump(flask_login.current_user), HTTPStatus.OK
+
+    @api.expect(login_parser)
+    def post(self):
+        args = login_parser.parse_args()
+        user = UserModel.query.filter(UserModel.email == args["email"], UserModel.password == args["password"]).first()
+        if user is None:
+            return "", HTTPStatus.UNAUTHORIZED
+        flask_login.login_user(user)
+        return user_schema.dump(user), HTTPStatus.OK
+
+    @flask_login.login_required
+    def delete(self):
+        flask_login.logout_user()
+        return "", HTTPStatus.NO_CONTENT

@@ -37,3 +37,4 @@ yarn-error.log*
 venv/
 *.log*
 __pycache__/
+*.db
