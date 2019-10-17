@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app clipped>
+  <v-navigation-drawer :value="drawer" app clipped>
     <v-list dense>
       <v-list-item :to="{ name: 'bookings' }">
         <v-list-item-action>

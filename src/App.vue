@@ -1,6 +1,25 @@
 <template>
   <v-app>
-    <sidebar :drawer="drawer" v-if="isLoggedIn"></sidebar>
+    <v-navigation-drawer v-model="drawer" app clipped v-if="isLoggedIn">
+      <v-list dense>
+        <v-list-item :to="{ name: 'bookings' }">
+          <v-list-item-action>
+            <v-icon>mdi-book-open</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Bookings</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item :to="{ name: 'profile' }">
+          <v-list-item-action>
+            <v-icon>mdi-settings</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Settings</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
     <v-app-bar
       app
@@ -14,8 +33,7 @@
         <span class="font-weight-light">N</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-menu
-      >
+      <v-menu>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-account-circle</v-icon>
@@ -44,13 +62,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Sidebar from '@/components/Sidebar'
 
 export default {
   name: 'App',
-  components: {
-    Sidebar
-  },
   computed: {
     ...mapGetters(['isLoggedIn'])
   },
