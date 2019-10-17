@@ -1,5 +1,7 @@
 ﻿<template>
-  <div/>
+  <div>
+    <h1>eGOn</h1>
+  </div>
 </template>
 
 <script>

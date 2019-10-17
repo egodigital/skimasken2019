@@ -1,21 +1,12 @@
 ﻿<template>
   <div>
-    <TheNavBar />
     <router-view></router-view>
-    <TheFooter />
   </div>
 </template>
 
 <script>
-import TheNavBar from "@/components/TheNavBar.vue";
-import TheFooter from "@/components/TheFooter.vue";
-
 export default {
-  name: "app",
-  components: {
-    TheNavBar,
-    TheFooter
-  }
+  name: "app"
 };
 </script>
 
