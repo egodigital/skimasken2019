@@ -9,6 +9,21 @@
         <span>eGO</span>
         <span class="font-weight-light">N</span>
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <v-list-item-title @click="logout">Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-content>
@@ -30,8 +45,11 @@ export default {
   computed: {
     ...mapGetters(['isLoggedIn'])
   },
-  data: () => ({
-    //
-  }),
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      this.$router.push({ name: 'login' })
+    }
+  }
 };
 </script>

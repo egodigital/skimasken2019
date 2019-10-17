@@ -4,7 +4,9 @@ export default {
   },
   actions: {
     login({ commit }) {
-      commit('authSuccess', { user: "test" })
+      const user = { name: 'test' }
+      commit('authSuccess', { user })
+      localStorage.setItem('user', JSON.stringify(user))
     },
     logout({ commit }) {
       commit('authReset')
@@ -14,8 +16,8 @@ export default {
     authSuccess(state, payload) {
       state.user = payload.user
     },
-    authReset(state, payload) {
-      state.user = payload.user
+    authReset(state) {
+      state.user = null
     }
   },
   getters: {

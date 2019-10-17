@@ -60,6 +60,8 @@ export default {
       
       this.$store
         .dispatch("login", { username: this.username, password: this.password })
+      
+      this.$router.push({ name: 'profile' })
     }
   }
 };

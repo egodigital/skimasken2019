@@ -5,11 +5,28 @@ import Login from "@/views/Login"
 import Error404 from "@/views/404"
 Vue.use(VueRouter);
 
-// TODO Web Template Studio: Add routes for your new pages here.
+
 export default new VueRouter({
   mode: "history",
   routes: [
-    { path: "/", component: Login },
+    {
+      path: "/",
+      name: 'login',
+      component: Login,
+      meta: {
+        title: 'Login',
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: () => import(/* webpackChunkName: "profile" */ '@/views/Profile.vue'),
+      meta: {
+        title: 'Profile',
+        requiresAuth: true
+      }
+    },
 
     { path: "*", component: Error404 }
   ]
