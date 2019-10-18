@@ -16,8 +16,12 @@
           <img src="../assets/icons/level_icons/car_sharer.svg" alt="John"/>
         </v-avatar>
       </v-col>
-      <v-col cols="9" sm="8" align-self="center">
-        <v-progress-linear color="pink" value="67" height="30" rounded>Level 1</v-progress-linear>
+      <v-col cols="9" sm="8" align-self="center" style="position: relative">
+        <v-progress-linear color="pink" value="67" height="30" rounded></v-progress-linear>
+        <div style="top: -50%; position: absolute; width: 100%;" class="text-center">
+          <v-icon size="80" class="amber--text" style="text-shadow: 0 0 5px black">mdi-decagram</v-icon>
+          <span class="display-1 white--text font-weight-bold" style="left: calc(50% - 10px); top: 19px; position: absolute">2</span>
+        </div>
       </v-col>
     </v-row>
     <v-row>
@@ -26,8 +30,12 @@
           <img src="../assets/icons/level_icons/charger.svg" alt="John" />
         </v-avatar>
       </v-col>
-      <v-col cols="9" sm="8" align-self="center">
-        <v-progress-linear color="light-blue" value="46" height="30" rounded>Level 4</v-progress-linear>
+      <v-col cols="9" sm="8" align-self="center" style="position: relative">
+        <v-progress-linear color="light-blue" value="46" height="30" rounded></v-progress-linear>
+        <div style="top: -50%; position: absolute; width: 100%;" class="text-center">
+          <v-icon size="80" class="amber--text" style="text-shadow: 0 0 5px black">mdi-decagram</v-icon>
+          <span class="display-1 white--text font-weight-bold" style="left: calc(50% - 10px); top: 19px; position: absolute">4</span>
+        </div>
       </v-col>
     </v-row>
     <v-row>
@@ -36,8 +44,12 @@
           <img src="../assets/icons/level_icons/eco_driver.svg" alt="John" />
         </v-avatar>
       </v-col>
-      <v-col cols="9" sm="8" align-self="center">
-        <v-progress-linear color="light-green" value="15" height="30" rounded>Level 8</v-progress-linear>
+      <v-col cols="9" sm="8" align-self="center" style="position: relative">
+        <v-progress-linear color="light-green" value="14" height="30" rounded></v-progress-linear>
+        <div style="top: -50%; position: absolute; width: 100%;" class="text-center">
+          <v-icon size="80" class="amber--text" style="text-shadow: 0 0 5px black">mdi-decagram</v-icon>
+          <span class="display-1 white--text font-weight-bold" style="left: calc(50% - 10px); top: 19px; position: absolute">2</span>
+        </div>
       </v-col>
     </v-row>
     <v-row>
@@ -46,8 +58,12 @@
           <img src="../assets/icons/level_icons/reliability.svg" alt="John" />
         </v-avatar>
       </v-col>
-      <v-col cols="9" sm="8" align-self="center">
-        <v-progress-linear color="orange" value="89" height="30" rounded>Level 2</v-progress-linear>
+      <v-col cols="9" sm="8" align-self="center" style="position: relative">
+        <v-progress-linear color="orange" value="89" height="30" rounded></v-progress-linear>
+        <div style="top: -50%; position: absolute; width: 100%;" class="text-center">
+          <v-icon size="80" class="amber--text" style="text-shadow: 0 0 5px black">mdi-decagram</v-icon>
+          <span class="display-1 white--text font-weight-bold" style="left: calc(50% - 10px); top: 19px; position: absolute">5</span>
+        </div>
       </v-col>
     </v-row>
     <br>

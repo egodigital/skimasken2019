@@ -55,7 +55,7 @@
       <v-spacer></v-spacer>
       <v-btn fab :to="{ name: 'profile' }" color="white" class="elevation-0">
         <v-avatar>
-          <span class="black--text">PS</span>
+          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
         </v-avatar>
       </v-btn>
     </v-app-bar>
