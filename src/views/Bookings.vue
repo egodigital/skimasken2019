@@ -26,6 +26,23 @@
         ></v-text-field>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <v-data-table
+          :headers="headers"
+          :items="bookings"
+          hide-default-footer
+          class="elevation-1"
+        >
+          <template v-slot:item.user="{ value }">
+            <v-avatar size="35">
+              <v-img src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+            </v-avatar>
+            {{ value.user_name }}
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -57,7 +74,20 @@ export default {
         to: ''
       },
       isFuzzy: false,
-      vehicles: []
+      vehicles: [],
+      headers: [
+        { text: 'User', value: 'user' },
+        { text: 'Booking ID', value: 'id' },
+        { text: 'Vehicle', value: 'vehicle' },
+        { text: 'Status', value: 'vehicle' },
+      ],
+      bookings: [
+        { id: '2322adeqw', vehicle: 'AC-EGO 123 (Life 20)', user: { user_name: 'John Doe' }},
+        { id: '9t8bwhfww', vehicle: 'AC-EGO 124 (Life 30)', user: { user_name: 'John Doe' }},
+        { id: '34efbtz6u', vehicle: 'AC-EGO 125 (Life 40)', user: { user_name: 'John Doe' }},
+        { id: '242fdcwf2', vehicle: 'AC-EGO 126 (Life 50)', user: { user_name: 'John Doe' }},
+        { id: 'fdsgww43f', vehicle: 'AC-EGO 127 (Life 60)', user: { user_name: 'John Doe' }}
+      ]
     }
   }
 }
