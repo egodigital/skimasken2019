@@ -15,7 +15,6 @@ class ExperieceChecker:
         #achievements_schema.dump(AchievementModel.query.all())
 
         experience_results=ExperienceModel.query.filter_by(email=email).first()
-        print(experience_results)
         #increase or decrease exp
         if charging:
             experience_results.charger_exp = experience_results.charger_exp + exp_gain
