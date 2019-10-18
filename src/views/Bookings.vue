@@ -84,6 +84,12 @@
             <template v-slot:item.vehicle="{ value }">
               {{ value.licensePlate }} ({{ value.model }})
             </template>
+            <template v-slot:item.start_time="{ value }">
+              {{ moment(value) }}
+            </template>
+            <template v-slot:item.end_time="{ value }">
+              {{ moment(value) }}
+            </template>
           </v-data-table>
         </v-col>
       </v-row>
@@ -93,7 +99,7 @@
 
 <script>
 import DatetimePicker from "@/components/DatetimePicker";
-//import moment from 'moment-timezone'
+import moment from 'moment-timezone'
 
 export default {
   components: {
@@ -137,12 +143,17 @@ export default {
       vehicles: [],
       headers: [
         { text: "Booking ID", value: "id" },
-        { text: "Vehicle", value: "vehicle" }
+        { text: "Vehicle", value: "vehicle" },
+        { text: "From", value: "start_time" },
+        { text: "To", value: "end_time" },
       ],
       bookings: []
     };
   },
   methods: {
+    moment(date) {
+      return moment(date).format('MM/DD/YYYY HH:mm')
+    },
     submitForm() {
       if(this.$refs.form.validate() === false)
         return
