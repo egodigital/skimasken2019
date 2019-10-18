@@ -14,6 +14,7 @@ booking_parser.add_argument('fuzzy', type=bool, required=True, location="json")
 booking_parser.add_argument('car_id', type=str, required=True, location="json")
 booking_parser.add_argument('duration', type=int, required=True, location="json")
 booking_parser.add_argument('status', type=str, required=True, location="json")
+booking_parser.add_argument('distance', type=int, required=True, location="json")
 
 class BookingModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
