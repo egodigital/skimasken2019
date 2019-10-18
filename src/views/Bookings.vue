@@ -36,6 +36,16 @@ export default {
   components: {
     DatetimePicker
   },
+  created() {
+    this.$http.get('/api/vehicle/').then(resp => {
+      for(const vehicle of resp.data.data) {
+        this.vehicles.push({
+          text: `${vehicle.licensePlate} (${vehicle.model})`,
+          value: vehicle.id
+        })
+      }
+    })
+  },
   data() {
     return {
       date: {
@@ -47,12 +57,7 @@ export default {
         to: ''
       },
       isFuzzy: false,
-      vehicles: [
-        {
-          text: 'Vehicle 1',
-          value: 'dsds'
-        }
-      ]
+      vehicles: []
     }
   }
 }
