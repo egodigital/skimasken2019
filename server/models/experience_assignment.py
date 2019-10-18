@@ -10,6 +10,7 @@ experience_assignment_parser.add_argument('car_sharer_exp', type=int, required=T
 experience_assignment_parser.add_argument('eco_driver_exp', type=int, required=True)
 experience_assignment_parser.add_argument('reliability_exp', type=int, required=True)
 
+
 class ExperienceModel(db.Model):
     email = db.Column(db.String, primary_key=True)#, autoincrement=True)
     charger_exp = db.Column(db.Integer, nullable=False)
@@ -26,6 +27,7 @@ class ExperienceModel(db.Model):
 class ExperienceSchema(ma.ModelSchema):
     class Meta:
         model = ExperienceModel
+
 
 experience_schema = ExperienceSchema()
 experiences_schema = ExperienceSchema(many=True)
