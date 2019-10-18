@@ -8,7 +8,6 @@ user_parser.add_argument('email', type=str, required=True, location="json")
 user_parser.add_argument('name', type=str, required=True, location="json")
 user_parser.add_argument('password', type=str, required=True, location="json")
 user_parser.add_argument('user_name', type=str, required=True, location="json")
-user_parser.add_argument('environment_id', type=str, required=True, location="json")
 
 
 class UserModel(db.Model):
@@ -28,7 +27,7 @@ class UserModel(db.Model):
         self.user_name = user_name
         self.environment_id = environment_id
 
-    def check_password(password):
+    def check_password(self, password):
         return security.check_password_hash(self.password, password)
 
     def is_authenticated(self):

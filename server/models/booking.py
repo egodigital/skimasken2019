@@ -11,7 +11,7 @@ booking_parser.add_argument('fuzzy', type=bool, required=True, location="json")
 booking_parser.add_argument('public', type=bool, required=True, location="json")
 booking_parser.add_argument('distance', type=int, required=True, location="json")
 booking_parser.add_argument('destination', type=str, required=True, location="json")
-booking_parser.add_argument('environment_id', type=str, required=True, location="json")
+#booking_parser.add_argument('environment_id', type=str, required=True, location="json")
 
 booking_parser.add_argument('id', type=str, required=True, location="json")
 booking_parser.add_argument('vehicle_id', type=str, required=True, location="json")
@@ -44,6 +44,7 @@ class BookingModel(db.Model):
 
     def get_duration(self):
         return (self.end_time - self.start_tim).seconds
+
 
 class BookingSchema(ma.ModelSchema):
     class Meta:

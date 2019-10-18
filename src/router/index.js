@@ -36,6 +36,24 @@ export default new VueRouter({
         requiresAuth: true
       }
     },
+    {
+      path: "/vehicles",
+      name: "vehicles",
+      component: () => import(/* webpackChunkName: "vehicles" */ '@/views/Vehicles.vue'),
+      meta: {
+        title: 'Vehicles',
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/blackboard",
+      name: "blackboard",
+      component: () => import(/* webpackChunkName: "blackboard" */ '@/views/Blackboard.vue'),
+      meta: {
+        title: 'Blackboard',
+        requiresAuth: true
+      }
+    },
 
     { path: "*", component: Error404 }
   ]

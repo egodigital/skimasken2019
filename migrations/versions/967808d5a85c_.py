@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 83203ec8b613
+Revision ID: 967808d5a85c
 Revises: f950c9d090eb
-Create Date: 2019-10-18 03:45:20.046338
+Create Date: 2019-10-18 03:47:29.900998
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '83203ec8b613'
+revision = '967808d5a85c'
 down_revision = 'f950c9d090eb'
 branch_labels = None
 depends_on = None
@@ -42,10 +42,8 @@ def upgrade():
     sa.PrimaryKeyConstraint('email')
     )
     with op.batch_alter_table('booking_model', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('distance', sa.Integer(), nullable=False))
         batch_op.add_column(sa.Column('fuzzy', sa.Boolean(), nullable=False))
         batch_op.add_column(sa.Column('id', sa.Integer(), nullable=False))
-        batch_op.add_column(sa.Column('status', sa.String(), nullable=False))
         batch_op.alter_column('duration',
                existing_type=sa.VARCHAR(),
                type_=sa.Integer(),
@@ -54,12 +52,18 @@ def upgrade():
                existing_type=sa.VARCHAR(),
                type_=sa.DateTime(),
                existing_nullable=False)
+        batch_op.alter_column('end_time_fuzzy',
+               existing_type=sa.VARCHAR(),
+               type_=sa.DateTime(),
+               existing_nullable=True)
         batch_op.alter_column('start_time',
                existing_type=sa.VARCHAR(),
                type_=sa.DateTime(),
                existing_nullable=False)
-        batch_op.drop_column('start_time_fuzzy')
-        batch_op.drop_column('end_time_fuzzy')
+        batch_op.alter_column('start_time_fuzzy',
+               existing_type=sa.VARCHAR(),
+               type_=sa.DateTime(),
+               existing_nullable=True)
         batch_op.drop_column('Fuzzy')
         batch_op.drop_column('APIid')
 
@@ -71,12 +75,18 @@ def downgrade():
     with op.batch_alter_table('booking_model', schema=None) as batch_op:
         batch_op.add_column(sa.Column('APIid', sa.VARCHAR(), nullable=False))
         batch_op.add_column(sa.Column('Fuzzy', sa.BOOLEAN(), nullable=False))
-        batch_op.add_column(sa.Column('end_time_fuzzy', sa.VARCHAR(), nullable=True))
-        batch_op.add_column(sa.Column('start_time_fuzzy', sa.VARCHAR(), nullable=True))
+        batch_op.alter_column('start_time_fuzzy',
+               existing_type=sa.DateTime(),
+               type_=sa.VARCHAR(),
+               existing_nullable=True)
         batch_op.alter_column('start_time',
                existing_type=sa.DateTime(),
                type_=sa.VARCHAR(),
                existing_nullable=False)
+        batch_op.alter_column('end_time_fuzzy',
+               existing_type=sa.DateTime(),
+               type_=sa.VARCHAR(),
+               existing_nullable=True)
         batch_op.alter_column('end_time',
                existing_type=sa.DateTime(),
                type_=sa.VARCHAR(),
@@ -85,10 +95,8 @@ def downgrade():
                existing_type=sa.Integer(),
                type_=sa.VARCHAR(),
                existing_nullable=False)
-        batch_op.drop_column('status')
         batch_op.drop_column('id')
         batch_op.drop_column('fuzzy')
-        batch_op.drop_column('distance')
 
     op.drop_table('experience_model')
     op.drop_table('achievement_model')
