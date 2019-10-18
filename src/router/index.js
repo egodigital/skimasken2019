@@ -41,7 +41,16 @@ export default new VueRouter({
       name: "vehicles",
       component: () => import(/* webpackChunkName: "vehicles" */ '@/views/Vehicles.vue'),
       meta: {
-        title: 'Bookings',
+        title: 'Vehicles',
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/blackboard",
+      name: "blackboard",
+      component: () => import(/* webpackChunkName: "blackboard" */ '@/views/Blackboard.vue'),
+      meta: {
+        title: 'Blackboard',
         requiresAuth: true
       }
     },
