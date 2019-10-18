@@ -53,7 +53,7 @@
         <span class="font-weight-light">N</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn fab :to="{ name: 'profile' }" color="white" class="elevation-0">
+      <v-btn fab :to="{ name: 'profile' }" color="transparent" class="elevation-0">
         <v-avatar>
           <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
         </v-avatar>
