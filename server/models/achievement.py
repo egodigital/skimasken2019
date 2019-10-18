@@ -22,13 +22,14 @@ class AchievementModel(db.Model):
     description= db.Column(db.String, nullable=False)
     score = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, type, level_req, level_type, score,achievement_id, name):
+    def __init__(self, type, level_req, level_type, score,achievement_id, name,description):
         self.achievement_id=achievement_id
         self.type = type
         self.level_req = level_req
         self.level_type = level_type
         self.score = score
         self.name = name
+        self.description =description
 class AchievementSchema(ma.ModelSchema):
     class Meta:
         model = AchievementModel

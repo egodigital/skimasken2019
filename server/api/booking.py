@@ -9,7 +9,7 @@ from flask_restplus import Resource
 from server.models.booking import BookingModel, booking_schema, bookings_schema, booking_parser
 from server.extensions.database import db
 
-import server.game.achievement
+from server.game.achievement import ArchievementChecker
 
 log = logging.getLogger(__name__)
 api = Namespace('booking', description='Booking related endpoints.')
@@ -26,17 +26,31 @@ class Booking(Resource):
             db.session.delete(booking)
             db.session.commit()
         return "", HTTPStatus.NO_CONTENT
+    def patch(self, id):
+        print("LOL AMK")
+
+
+        booking = BookingModel.query.filter(BookingModel.id == id).first()
+        if booking:
+            email=booking.email
+            print("email is "+str(email))
+            aChecker = ArchievementChecker(db.session)
+            ArchievementChecker.check_achievements_for_user(aChecker,email)
+            #TODO set status
+            booking.status = "ended"
+            db.session.commit()
+
 
 @api.route('/<string:email>')
 class Bookingend(Resource):
     def get(self, id):
         print("LOL AMK")
         self.check_achievements_for_user("fds")
-        #booking = BookingModel.query.filter(BookingModel.id == id).first()
-        #if booking:
+        booking = BookingModel.query.filter(BookingModel.id == id).first()
+        if booking:
             #TODO set status
-
-        #    db.session.commit()
+            booking.status = "ended"
+            db.session.commit()
 
 
         return "", HTTPStatus.NO_CONTENT
