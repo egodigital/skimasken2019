@@ -57,3 +57,15 @@ class VehicleList(Resource):
         db.session.add(booking)
         db.session.commit()
         return booking_schema.dump(booking), HTTPStatus.CREATED
+
+@api.route('/string:vehicle_id')
+class VehicleSingle(Resource):
+    @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
+    def get(self, vehicle_id):
+        user = flask_login.current_user
+        response = requests.get(current_app.config["API_BASE"] + f"/vehicles/{vehicle_id}", headers={"X-Api-Key": current_app.config["API_KEY"], "vehicle_id": vehicle_id})
+        return response.json(), response.status_code
