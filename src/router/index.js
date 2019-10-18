@@ -54,6 +54,15 @@ export default new VueRouter({
         requiresAuth: true
       }
     },
+    {
+      path: "/leaderboard",
+      name: "leaderboard",
+      component: () => import(/* webpackChunkName: "leaderboard" */ '@/views/Leaderboard.vue'),
+      meta: {
+        title: 'Leaderboard',
+        requiresAuth: true
+      }
+    },
 
     { path: "*", component: Error404 }
   ]

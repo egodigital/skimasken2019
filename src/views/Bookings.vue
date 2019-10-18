@@ -67,7 +67,7 @@
           ></v-checkbox>
         </v-col>
         <v-col cols="4" align-self="center" class="text-center">
-          <v-btn type="submit">
+          <v-btn type="submit" color="blue accent-2" class="white--text">
             <v-icon>mdi-plus</v-icon>Add booking
           </v-btn>
         </v-col>
@@ -81,6 +81,15 @@
             hide-default-footer
             class="elevation-1"
           >
+            <template v-slot:item.vehicle="{ value }">
+              {{ value.licensePlate }} ({{ value.model }})
+            </template>
+            <template v-slot:item.start_time="{ value }">
+              {{ moment(value) }}
+            </template>
+            <template v-slot:item.end_time="{ value }">
+              {{ moment(value) }}
+            </template>
           </v-data-table>
         </v-col>
       </v-row>
@@ -90,21 +99,30 @@
 
 <script>
 import DatetimePicker from "@/components/DatetimePicker";
-//import moment from 'moment-timezone'
+import moment from 'moment-timezone'
 
 export default {
   components: {
     DatetimePicker
   },
-  created() {
-    this.$http.get("/api/vehicle/").then(resp => {
-      for (const vehicle of resp.data.data) {
-        this.vehicles.push({
-          text: `${vehicle.licensePlate} (${vehicle.model})`,
-          value: vehicle.id
-        });
-      }
-    });
+  async created() {
+    // Fetch all vehicles
+    const responseVehicles = await this.$http.get("/api/vehicle/")
+    for (const vehicle of responseVehicles.data.data) {
+      this.vehicles.push({
+        text: `${vehicle.licensePlate} (${vehicle.model})`,
+        value: vehicle.id
+      });
+    }
+    
+    // Fetch my bookings
+    const responseBookings = await this.$http.get('/api/booking/me')
+    const bookings = responseBookings.data
+    for(const booking of bookings) {
+      booking.vehicle = responseVehicles.data.data.filter(v => v.id === booking.vehicle_id)[0]
+    }
+
+    this.bookings.push(...bookings)
   },
   data() {
     return {
@@ -126,12 +144,16 @@ export default {
       headers: [
         { text: "Booking ID", value: "id" },
         { text: "Vehicle", value: "vehicle" },
-        { text: "Status", value: "vehicle" }
+        { text: "From", value: "start_time" },
+        { text: "To", value: "end_time" },
       ],
       bookings: []
     };
   },
   methods: {
+    moment(date) {
+      return moment(date).format('MM/DD/YYYY HH:mm')
+    },
     submitForm() {
       if(this.$refs.form.validate() === false)
         return
@@ -140,9 +162,11 @@ export default {
       .then(resp => {
         const booking = resp.data
 
-        //this.$http.get('/api/vehicle/')
+        this.$http.get(`/api/vehicle/${booking.vehicle_id}`).then(resp => {
+          booking.vehicle = resp.data.data
+          this.bookings.push(booking)
+        })
 
-        this.bookings.push(booking)
         this.$refs.form.reset()
         this.form.fuzzy = false
         this.form.public = false
