@@ -35,6 +35,16 @@ class VehicleList(Resource):
         HTTPStatus.UNAUTHORIZED: 'Not authorized'
     })
     @api.expect(booking_parser)
+    def get(self, vehicle_id):
+        return bookings_schema.dump(BookingModel.vehicle_id == vehicle_id), HTTPStatus.OK
+
+
+    @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
+    @api.expect(booking_parser)
     def post(self, vehicle_id):
         user = flask_login.current_user
         args = booking_parser.parse_args()

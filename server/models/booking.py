@@ -3,7 +3,6 @@ from server import db
 from server.extensions.marshmallow import ma
 from flask_restplus import reqparse
 
-
 booking_parser = reqparse.RequestParser()
 booking_parser.add_argument('start_time', type=str, required=True, location="json")
 booking_parser.add_argument('end_time', type=str, required=True, location="json")
@@ -38,7 +37,20 @@ class BookingModel(db.Model):
         self.environment_id = environment_id
 
     def get_duration(self):
-        return (end_time - start_tim).seconds
+        return (self.end_time - self.start_time).total_seconds() // 60
+
+    def overlaps(self, other):
+        if self.start_time <= other.start_time and self.end_time > other.start_time:
+            return True
+        if other.start_time <= self.start_time and other.end_time > self.start_time:
+            return True
+        return False
+
+    def __repr__(self):
+        return f"{self.start_time}: {self.get_duration()}m"
+
+    def __lt__(self, other):
+        return self.start_time < other.start_time
 
 class BookingSchema(ma.ModelSchema):
     class Meta:
