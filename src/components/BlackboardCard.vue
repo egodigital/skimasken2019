@@ -23,6 +23,13 @@
       </v-list-item-content>
     </v-list-item>
 
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title>{{ booking.destination }}</v-list-item-title>
+        <v-list-item-subtitle>Destination</v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+
     <v-card-actions>
       <v-btn>
         Request
