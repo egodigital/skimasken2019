@@ -139,14 +139,6 @@ export default {
         }
       ]
     }
-  },
-  methods: {
-    getImgURL(url) {
-      if(url !== null)
-        return require(url)
-      
-      return null
-    }
   }
 };
 </script>
