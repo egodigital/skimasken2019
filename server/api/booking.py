@@ -9,6 +9,8 @@ from flask_restplus import Resource
 from server.models.booking import BookingModel, booking_schema, bookings_schema, booking_parser
 from server.extensions.database import db
 
+import server.game.achievement
+
 log = logging.getLogger(__name__)
 api = Namespace('booking', description='Booking related endpoints.')
 
@@ -23,6 +25,15 @@ class Booking(Resource):
         if booking:
             db.session.delete(booking)
             db.session.commit()
+        return "", HTTPStatus.NO_CONTENT
+    def finish_booking(self, APIid):
+        booking = BookingModel.query.filter(BookingModel.APIid == APIid).first()
+        if booking:
+            #TODO set status
+            self.check_achievements_for_user("fds")
+            db.session.commit()
+
+
         return "", HTTPStatus.NO_CONTENT
 
 @api.route('/')
