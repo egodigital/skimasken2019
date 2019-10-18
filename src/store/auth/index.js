@@ -9,10 +9,14 @@ export default {
       return new Promise((resolve, reject) => {
         Vue.axios.post('/api/user/me', userData)
         .then(resp => {
-          commit('authSuccess', { user: resp.data })
-          localStorage.setItem('user', JSON.stringify(resp.data))
+          const user = resp.data
 
-          resolve(resp.user)
+          user.level = 3
+
+          commit('authSuccess', { user: user })
+          localStorage.setItem('user', JSON.stringify(user))
+
+          resolve(user)
         })
         .catch(err => {
           commit('authReset')
