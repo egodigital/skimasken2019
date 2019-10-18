@@ -9,20 +9,11 @@ class ArchievementChecker:
         self.session=session
 
     def check_achievements_for_user(self,email):
-        #error when empty
-        #TODO hardcode
-        #achievement=AchievementModel.query.filter_by(achievement_id=5).first()
-        #db.session.add(achievement)
-        #db.session.commit()
-        #achievements_schema.dump(AchievementModel.query.all())
         achievements_assignments=[a.achievement_id for a in AchievementAssignmentModel.query.filter_by(user_email=email).all()]
-
         achievements = AchievementModel.query.filter(AchievementModel.achievement_id.notin_(achievements_assignments)).all()
-
         self.check_if_archieved(email, achievements)
-        for row in achievements:
-            print("ID: ", row.achievement_id, "Email: ", row.name)
-        #score updaten
+
+        #TODO score updaten
     def check_if_archieved(self, email, achievement_query_result):
         for achievement in achievement_query_result:
             new_achievement_flag=False

@@ -10,6 +10,7 @@ from server.models.booking import BookingModel, booking_schema, bookings_schema,
 from server.extensions.database import db
 
 from server.game.achievement import ArchievementChecker
+from server.game.level import ExperieceChecker
 
 log = logging.getLogger(__name__)
 api = Namespace('booking', description='Booking related endpoints.')
@@ -33,28 +34,13 @@ class Booking(Resource):
         booking = BookingModel.query.filter(BookingModel.id == id).first()
         if booking:
             email=booking.email
-            print("email is "+str(email))
             aChecker = ArchievementChecker(db.session)
             ArchievementChecker.check_achievements_for_user(aChecker,email)
+            expChecker = ExperieceChecker(db.session)
+            ExperieceChecker.update_experience(expChecker,email,True,True,False,False)#test booleans
             #TODO set status
             booking.status = "ended"
             db.session.commit()
-
-
-@api.route('/<string:email>')
-class Bookingend(Resource):
-    def get(self, id):
-        print("LOL AMK")
-        self.check_achievements_for_user("fds")
-        booking = BookingModel.query.filter(BookingModel.id == id).first()
-        if booking:
-            #TODO set status
-            booking.status = "ended"
-            db.session.commit()
-
-
-        return "", HTTPStatus.NO_CONTENT
-
 
 
 @api.route('/')
