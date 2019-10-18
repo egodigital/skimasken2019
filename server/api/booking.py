@@ -28,9 +28,6 @@ class Booking(Resource):
             db.session.commit()
         return "", HTTPStatus.NO_CONTENT
     def patch(self, id):
-        print("LOL AMK")
-
-
         booking = BookingModel.query.filter(BookingModel.id == id).first()
         if booking:
             email=booking.email

@@ -14,8 +14,8 @@ class ExperieceChecker:
     def update_experience(self,email,charging, car_sharer, reliability, eco_driver):
         #achievements_schema.dump(AchievementModel.query.all())
 
-        experience_results=ExperienceModel.query.filter_by(email=email).all()
-
+        experience_results=ExperienceModel.query.filter_by(email=email).first()
+        print(experience_results)
         #increase or decrease exp
         if charging:
             experience_results.charger_exp = experience_results.charger_exp + exp_gain
@@ -36,5 +36,24 @@ class ExperieceChecker:
 
 
         #level checking
-
+        if experience_results.eco_driver_exp< experience_results.eco_driver_level*experience_results.eco_driver_level*10:
+            experience_results.eco_driver_level= experience_results.eco_driver_level-1
+        elif experience_results.eco_driver_exp > (experience_results.eco_driver_level+1) * (experience_results.eco_driver_level+1)\
+                    * 10:
+                experience_results.eco_driver_level = experience_results.eco_driver_level + 1
+        if experience_results.charger_exp< experience_results.charger_level*experience_results.charger_level*10:
+            experience_results.charger_level= experience_results.charger_level-1
+        elif experience_results.charger_exp > (experience_results.charger+1) * (experience_results.charger+1)\
+                    * 10:
+                experience_results.charger_level = experience_results.charger_level + 1
+        if experience_results.car_sharer_exp< experience_results.car_sharer_level*experience_results.car_sharer_level*10:
+            experience_results.car_sharer_level= experience_results.car_sharer_level-1
+        elif experience_results.car_sharer_exp > (experience_results.car_sharer_level+1) * (experience_results.car_sharer_level+1)\
+                    * 10:
+                experience_results.car_sharer_level = experience_results.car_sharer_level + 1
+        if experience_results.reliability_exp< experience_results.reliability_level*experience_results.reliability_level*10:
+            experience_results.reliability_level= experience_results.reliability_level-1
+        elif experience_results.reliability_exp > (experience_results.reliability_level+1) * (experience_results.reliability_level+1)\
+                    * 10:
+                experience_results.reliability_level = experience_results.reliability_level + 1
         self.session.commit()
