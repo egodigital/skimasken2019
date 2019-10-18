@@ -19,6 +19,18 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <v-list>
+          <v-list-item @click="logout">
+            <v-list-item-action>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar
@@ -33,22 +45,11 @@
         <span class="font-weight-light">N</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-menu>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-account-circle</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item :to="{ name: 'profile' }">
-            <v-list-item-title>Profile</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="logout">
-            <v-list-item-title>Logout</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <v-btn fab :to="{ name: 'profile' }" color="white" class="elevation-0">
+        <v-avatar>
+          <span class="black--text">PS</span>
+        </v-avatar>
+      </v-btn>
     </v-app-bar>
 
     <v-content>
