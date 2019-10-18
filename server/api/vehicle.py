@@ -34,19 +34,6 @@ class VehicleList(Resource):
         HTTPStatus.OK: 'Success',
         HTTPStatus.UNAUTHORIZED: 'Not authorized'
     })
-    def get(self, vehicle_id):
-        user = flask_login.current_user
-        response = requests.get(current_app.config["API_BASE"] + f"/vehicles/{vehicle_id}/bookings", headers={"X-Api-Key": current_app.config["API_KEY"]})
-        data = response.json()
-        if data["data"]["environment"]["id"] != user.environment_id:
-            return "", HTTPStatus.UNAUTHORIZED
-        return data, response.status_code
-
-    @flask_login.login_required
-    @api.doc(responses={
-        HTTPStatus.OK: 'Success',
-        HTTPStatus.UNAUTHORIZED: 'Not authorized'
-    })
     @api.expect(booking_parser)
     def post(self, vehicle_id):
         user = flask_login.current_user

@@ -2,9 +2,10 @@ import requests
 import random
 import logging
 from http import HTTPStatus
-from flask import request
+from flask import request, current_app
 from flask_restplus import Namespace
 from flask_restplus import Resource
+from flask_restplus import reqparse
 import flask_login
 
 from server.models.booking import BookingModel, booking_schema, bookings_schema, booking_parser
@@ -13,21 +14,32 @@ from server.extensions.database import db
 log = logging.getLogger(__name__)
 api = Namespace('booking', description='Booking related endpoints.')
 
-def get_all_bookings():
-    return requests.get(current_app.config["API_BASE"] + f"/bookings", headers={"X-Api-Key": current_app.config["API_KEY"]}).json()
+booking_patch_parser = reqparse.RequestParser()
+booking_patch_parser.add_argument('id', type=str, required=True, location="json")
+booking_patch_parser.add_argument('action', type=str, required=True, location="json")
 
-@api.route('/<string:id>')
+@api.route('/me')
 class Booking(Resource):
-    def get(self, id):
-        booking = BookingModel.query.filter(BookingModel.id == id).first()
-        return booking_schema.dump(booking), HTTPStatus.OK
+    @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
+    def get(self):
+        user = flask_login.current_user
+        booking = BookingModel.query.filter(BookingModel.email == user.email).all()
+        return bookings_schema.dump(booking), HTTPStatus.OK
 
-    def delete(self, id):
-        booking = BookingModel.query.filter(BookingModel.id == id).first()
-        if booking:
-            db.session.delete(booking)
-            db.session.commit()
-        return "", HTTPStatus.NO_CONTENT
+    @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
+    @api.expect(booking_patch_parser)
+    def patch(self):
+        args = booking_patch_parser.parse_args()
+        resp = requests.patch(current_app.config["API_BASE"] + f"/bookings/{args['id']}/{args['action']}", headers={"X-Api-Key": current_app.config["API_KEY"]})
+        return resp.json(), resp.status_code
 
 @api.route('/')
 class BookingList(Resource):
