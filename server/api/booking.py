@@ -33,11 +33,7 @@ class Booking(Resource):
         booking = BookingModel.query.filter(BookingModel.email == user.email).all()
         return bookings_schema.dump(booking), HTTPStatus.OK
 
-            #email=booking.email
-            #aChecker = ArchievementChecker(db.session)
-            #ArchievementChecker.check_achievements_for_user(aChecker,email)
-            #expChecker = ExperieceChecker(db.session)
-            #ExperieceChecker.update_experience(expChecker,email,True,True,False,False)#test booleans
+
             #TODO set status
 
     @flask_login.login_required
@@ -49,6 +45,13 @@ class Booking(Resource):
     def patch(self):
         args = booking_patch_parser.parse_args()
         resp = requests.patch(current_app.config["API_BASE"] + f"/bookings/{args['id']}/{args['action']}", headers={"X-Api-Key": current_app.config["API_KEY"]})
+        if args['action']=="finish" and resp.status_code==200:
+            email=flask_login.current_user.email
+            aChecker = ArchievementChecker(db.session)
+            ArchievementChecker.check_achievements_for_user(aChecker,email)
+            expChecker = ExperieceChecker(db.session)
+            ExperieceChecker.update_experience(expChecker,email,True,True,False,False)#test booleans
+
         return resp.json(), resp.status_code
 
 @api.route('/')

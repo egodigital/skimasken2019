@@ -13,7 +13,6 @@ booking_parser.add_argument('distance', type=int, required=True, location="json"
 booking_parser.add_argument('destination', type=str, required=True, location="json")
 #booking_parser.add_argument('environment_id', type=str, required=True, location="json")
 
-booking_parser.add_argument('id', type=str, required=True, location="json")
 booking_parser.add_argument('vehicle_id', type=str, required=True, location="json")
 
 booking_parser.add_argument('email', type=str, required=True, location="json")
