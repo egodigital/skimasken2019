@@ -27,7 +27,7 @@ class UserModel(db.Model):
         self.user_name = user_name
         self.environment_id = environment_id
 
-    def check_password(password):
+    def check_password(self, password):
         return security.check_password_hash(self.password, password)
 
     def is_authenticated(self):
