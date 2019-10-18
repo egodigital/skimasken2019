@@ -1,98 +1,156 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12" md="3">
-        <datetime-picker :timePickerProps="{'allowed-minutes': [0, 15, 30, 45]}" label="From" v-model="date.from"></datetime-picker>
-      </v-col>
-      <v-col cols="12" md="3">
-        <datetime-picker :timePickerProps="{'allowed-minutes': [0, 15, 30, 45]}" label="To" v-model="date.to"></datetime-picker>
-      </v-col>
-      <v-col cols="12" md="2">
-        <v-select
-          :items="vehicles"
-          label="Standard"
-        ></v-select>
-      </v-col>
-      <v-col cols="12" md="1">
-        <v-checkbox
-          v-model="isFuzzy"
-          label="Fuzzy?"
-        ></v-checkbox>
-      </v-col>
-      <v-col cols="12" md="3" v-if="isFuzzy">
-        <v-text-field
-          label="Duration in minutes"
-          type="number"
-        ></v-text-field>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-data-table
-          :headers="headers"
-          :items="bookings"
-          hide-default-footer
-          class="elevation-1"
-        >
-          <template v-slot:item.user="{ value }">
-            <v-avatar size="35">
-              <v-img src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
-            </v-avatar>
-            {{ value.user_name }}
-          </template>
-        </v-data-table>
-      </v-col>
-    </v-row>
+    <v-form  @submit.prevent="submitForm" ref="form" lazy-validation>
+      <v-row>
+        <v-col cols="12" md="4">
+          <datetime-picker
+            :timePickerProps="{'allowed-minutes': [0, 15, 30, 45]}"
+            label="From"
+            v-model="form.start_time"
+            :rules="rules.datetimeRules"
+            required
+          ></datetime-picker>
+        </v-col>
+        <v-col cols="12" md="4">
+          <datetime-picker
+            :timePickerProps="{'allowed-minutes': [0, 15, 30, 45]}"
+            label="To"
+            v-model="form.end_time"
+            :rules="rules.datetimeRules"
+            required
+          ></datetime-picker>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-select
+            :items="vehicles"
+            label="Vehicle"
+            v-model="form.vehicle_id"
+            :rules="rules.vehicleRules"
+            required
+          ></v-select>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            label="Destination"
+            v-model="form.destination"
+            :rules="rules.destinationRules"
+            required
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <v-subheader class="pl-0">Distance (in km)</v-subheader>
+          <v-text-field type="number" v-model="form.distance"></v-text-field>
+          <v-slider
+            v-model="form.distance"
+            thumb-label
+            min="5"
+            max="850"
+            required
+          ></v-slider>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="4">
+          <v-checkbox
+            v-model="form.fuzzy"
+            label="Fuzzy?"
+            hint="Take a booking anywhere inbetween the given datetime range as soon as the selected vehicle is available."
+            persistent-hint
+          ></v-checkbox>
+        </v-col>
+        <v-col cols="4">
+          <v-checkbox
+            v-model="form.public"
+            label="Public?"
+            hint="Place the booking onto the blackboard to make it publicy available to others nearby."
+            persistent-hint
+          ></v-checkbox>
+        </v-col>
+        <v-col cols="4" align-self="center" class="text-center">
+          <v-btn type="submit">
+            <v-icon>mdi-plus</v-icon>Add booking
+          </v-btn>
+        </v-col>
+      </v-row>
+      <hr />
+      <v-row>
+        <v-col>
+          <v-data-table
+            :headers="headers"
+            :items="bookings"
+            hide-default-footer
+            class="elevation-1"
+          >
+          </v-data-table>
+        </v-col>
+      </v-row>
+    </v-form>
   </v-container>
 </template>
 
 <script>
-import DatetimePicker from '@/components/DatetimePicker'
+import DatetimePicker from "@/components/DatetimePicker";
+//import moment from 'moment-timezone'
 
 export default {
   components: {
     DatetimePicker
   },
   created() {
-    this.$http.get('/api/vehicle/').then(resp => {
-      for(const vehicle of resp.data.data) {
+    this.$http.get("/api/vehicle/").then(resp => {
+      for (const vehicle of resp.data.data) {
         this.vehicles.push({
           text: `${vehicle.licensePlate} (${vehicle.model})`,
           value: vehicle.id
-        })
+        });
       }
-    })
+    });
   },
   data() {
     return {
-      date: {
-        from: '',
-        to: ''
+      form: {
+        start_time: "",
+        end_time: "",
+        fuzzy: false,
+        public: false,
+        distance: 0,
+        destination: "",
+        vehicle_id: 0
       },
-      fuzzyDate: {
-        from: '',
-        to: ''
+      rules: {
+        datetimeRules: [v => !!v || "Please select a datetime."],
+        vehicleRules: [v => !!v || "Please select a vehicle."],
+        destinationRules: [v => !!v || "Please select a destination."]
       },
-      isFuzzy: false,
       vehicles: [],
       headers: [
-        { text: 'User', value: 'user' },
-        { text: 'Booking ID', value: 'id' },
-        { text: 'Vehicle', value: 'vehicle' },
-        { text: 'Status', value: 'vehicle' },
+        { text: "Booking ID", value: "id" },
+        { text: "Vehicle", value: "vehicle" },
+        { text: "Status", value: "vehicle" }
       ],
-      bookings: [
-        { id: '2322adeqw', vehicle: 'AC-EGO 123 (Life 20)', user: { user_name: 'John Doe' }},
-        { id: '9t8bwhfww', vehicle: 'AC-EGO 124 (Life 30)', user: { user_name: 'John Doe' }},
-        { id: '34efbtz6u', vehicle: 'AC-EGO 125 (Life 40)', user: { user_name: 'John Doe' }},
-        { id: '242fdcwf2', vehicle: 'AC-EGO 126 (Life 50)', user: { user_name: 'John Doe' }},
-        { id: 'fdsgww43f', vehicle: 'AC-EGO 127 (Life 60)', user: { user_name: 'John Doe' }}
-      ]
+      bookings: []
+    };
+  },
+  methods: {
+    submitForm() {
+      if(this.$refs.form.validate() === false)
+        return
+      
+      this.$http.post(`/api/vehicle/${this.form.vehicle_id}/bookings`, this.form)
+      .then(resp => {
+        const booking = resp.data
+
+        //this.$http.get('/api/vehicle/')
+
+        this.bookings.push(booking)
+        this.$refs.form.reset()
+        this.form.fuzzy = false
+        this.form.public = false
+      })
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>
