@@ -67,7 +67,7 @@
           ></v-checkbox>
         </v-col>
         <v-col cols="4" align-self="center" class="text-center">
-          <v-btn type="submit">
+          <v-btn type="submit" color="blue accent-2" class="white--text">
             <v-icon>mdi-plus</v-icon>Add booking
           </v-btn>
         </v-col>
