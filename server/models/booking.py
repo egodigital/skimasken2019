@@ -26,7 +26,7 @@ class BookingModel(db.Model):
     start_time_fuzzy = db.Column(db.DateTime, nullable=True)
     end_time_fuzzy = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self, start_time, end_time, Fuzzy, car_id, duration, start_time_fuzzy=None, end_time_fuzzy=None):
+    def __init__(self, start_time, end_time, Fuzzy, car_id, duration, id, start_time_fuzzy=None, end_time_fuzzy=None):
         self.start_time = start_time
         self.end_time = end_time
         self.Fuzzy = Fuzzy
@@ -34,6 +34,7 @@ class BookingModel(db.Model):
         self.duration = duration
         self.start_time_fuzzy = start_time_fuzzy
         self.end_time_fuzzy = end_time_fuzzy
+        self.id = id
 
 
 class BookingSchema(ma.ModelSchema):

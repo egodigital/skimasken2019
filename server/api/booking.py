@@ -26,15 +26,21 @@ class Booking(Resource):
             db.session.delete(booking)
             db.session.commit()
         return "", HTTPStatus.NO_CONTENT
-    def finish_booking(self, APIid):
-        booking = BookingModel.query.filter(BookingModel.APIid == APIid).first()
-        if booking:
+
+@api.route('/<string:email>')
+class Bookingend(Resource):
+    def get(self, id):
+        self.check_achievements_for_user("fds")
+        #booking = BookingModel.query.filter(BookingModel.id == id).first()
+        #if booking:
             #TODO set status
-            self.check_achievements_for_user("fds")
-            db.session.commit()
+
+        #    db.session.commit()
 
 
         return "", HTTPStatus.NO_CONTENT
+
+
 
 @api.route('/')
 class BookingList(Resource):
