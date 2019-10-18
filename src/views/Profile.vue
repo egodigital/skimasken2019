@@ -5,8 +5,8 @@
         <v-avatar size="150">
           <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
         </v-avatar>
-        <div class="display-3">{{ $store.state.auth.user.name }}</div>
-        <div class="heading text-grey">{{ $store.state.auth.user.user_name }}</div>
+        <div class="display-3">John Doe</div>
+        <div class="heading text-grey">john_doe</div>
         <hr>
       </v-col>
     </v-row>
