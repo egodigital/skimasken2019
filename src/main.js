@@ -54,10 +54,16 @@ new Vue({
   render: h => h(App),
   created() {
     // Check if user still has a session
-    this.$http.get('/api/user/me')
-    .then(() => {
-      if(this.$route.name === 'login')
-        this.$router.push({ name: 'home' })
-    })
+    try {
+      this.$http.get('/api/user/me')
+      .then(() => {
+        if(this.$route.name === 'login')
+          this.$router.push({ name: 'profile' })
+      }).catch(err => {
+        console.log(err)
+      })
+    } catch(e) {
+      console.log(e)
+    }
   }
 }).$mount("#app");

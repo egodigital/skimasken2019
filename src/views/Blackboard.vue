@@ -1,13 +1,19 @@
 <template>
-  <v-container>Blackboard</v-container>
+  <v-container>
+    <blackboard-card :booking="{}"></blackboard-card>
+    <blackboard-card :booking="{}"></blackboard-card>
+  </v-container>
 </template>
 
 <script>
-export default {
+import BlackboardCard from '@/components/BlackboardCard'
 
-}
+export default {
+  components: {
+    BlackboardCard
+  }
+};
 </script>
 
 <style>
-
 </style>
