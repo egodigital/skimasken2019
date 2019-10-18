@@ -8,7 +8,6 @@ user_parser.add_argument('email', type=str, required=True, location="json")
 user_parser.add_argument('name', type=str, required=True, location="json")
 user_parser.add_argument('password', type=str, required=True, location="json")
 user_parser.add_argument('user_name', type=str, required=True, location="json")
-user_parser.add_argument('environment_id', type=str, required=True, location="json")
 
 
 class UserModel(db.Model):
