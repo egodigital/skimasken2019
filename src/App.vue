@@ -26,6 +26,14 @@
             <v-list-item-title>Blackboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item :to="{ name: 'leaderboard' }">
+          <v-list-item-action>
+            <v-icon>mdi-format-list-numbered</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Leaderboard</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
       <template v-slot:append>
         <v-list>
