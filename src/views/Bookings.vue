@@ -81,6 +81,9 @@
             hide-default-footer
             class="elevation-1"
           >
+            <template v-slot:item.vehicle="{ value }">
+              {{ value.licensePlate }} ({{ value.model }})
+            </template>
           </v-data-table>
         </v-col>
       </v-row>
@@ -96,15 +99,24 @@ export default {
   components: {
     DatetimePicker
   },
-  created() {
-    this.$http.get("/api/vehicle/").then(resp => {
-      for (const vehicle of resp.data.data) {
-        this.vehicles.push({
-          text: `${vehicle.licensePlate} (${vehicle.model})`,
-          value: vehicle.id
-        });
-      }
-    });
+  async created() {
+    // Fetch all vehicles
+    const responseVehicles = await this.$http.get("/api/vehicle/")
+    for (const vehicle of responseVehicles.data.data) {
+      this.vehicles.push({
+        text: `${vehicle.licensePlate} (${vehicle.model})`,
+        value: vehicle.id
+      });
+    }
+    
+    // Fetch my bookings
+    const responseBookings = await this.$http.get('/api/booking/me')
+    const bookings = responseBookings.data
+    for(const booking of bookings) {
+      booking.vehicle = responseVehicles.data.data.filter(v => v.id === booking.vehicle_id)[0]
+    }
+
+    this.bookings.push(...bookings)
   },
   data() {
     return {
@@ -125,8 +137,7 @@ export default {
       vehicles: [],
       headers: [
         { text: "Booking ID", value: "id" },
-        { text: "Vehicle", value: "vehicle" },
-        { text: "Status", value: "vehicle" }
+        { text: "Vehicle", value: "vehicle" }
       ],
       bookings: []
     };
@@ -140,9 +151,11 @@ export default {
       .then(resp => {
         const booking = resp.data
 
-        //this.$http.get('/api/vehicle/')
+        this.$http.get(`/api/vehicle/${booking.vehicle_id}`).then(resp => {
+          booking.vehicle = resp.data.data
+          this.bookings.push(booking)
+        })
 
-        this.bookings.push(booking)
         this.$refs.form.reset()
         this.form.fuzzy = false
         this.form.public = false
