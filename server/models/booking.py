@@ -5,35 +5,40 @@ from flask_restplus import reqparse
 
 
 booking_parser = reqparse.RequestParser()
-booking_parser.add_argument('start_time', type=datetime, required=True, location="json")
-booking_parser.add_argument('end_time', type=datetime, required=True, location="json")
-booking_parser.add_argument('id', type=int, required=True, location="json")
+booking_parser.add_argument('start_time', type=str, required=True, location="json")
+booking_parser.add_argument('end_time', type=str, required=True, location="json")
 booking_parser.add_argument('fuzzy', type=bool, required=True, location="json")
-booking_parser.add_argument('car_id', type=str, required=True, location="json")
-booking_parser.add_argument('duration', type=int, required=True, location="json")
-booking_parser.add_argument('status', type=str, required=True, location="json")
+booking_parser.add_argument('public', type=bool, required=True, location="json")
 booking_parser.add_argument('distance', type=int, required=True, location="json")
+booking_parser.add_argument('destination', type=str, required=True, location="json")
 
 
 class BookingModel(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
     fuzzy = db.Column(db.Boolean, nullable=False)
-    car_id = db.Column(db.String, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
-    status = db.Column(db.String, nullable=False)
+    public = db.Column(db.Boolean, nullable=False)
+    vehicle_id = db.Column(db.String, nullable=False)
+    environment_id = db.Column(db.String, nullable=False)
     distance = db.Column(db.Integer, nullable=False)
+    email = db.Column(db.String, nullable=False)
+    destination = db.Column(db.String, nullable=True)
 
-    def __init__(self, start_time, end_time, Fuzzy, car_id, duration, status, id, distance):
+    def __init__(self, id, vehicle_id, environment_id, email, start_time, end_time, fuzzy, public, distance, destination):
         self.start_time = start_time
         self.end_time = end_time
-        self.Fuzzy = Fuzzy
-        self.car_id = car_id
-        self.duration = duration
+        self.fuzzy = fuzzy
+        self.vehicle_id = vehicle_id
         self.id = id
-        self.status = status
+        self.public = public
         self.distance = distance
+        self.email = email
+        self.destination = destination
+        self.environment_id = environment_id
+
+    def get_duration(self):
+        return (end_time - start_tim).seconds
 
 class BookingSchema(ma.ModelSchema):
     class Meta:
