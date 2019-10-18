@@ -14,14 +14,14 @@ import server.game.achievement
 log = logging.getLogger(__name__)
 api = Namespace('booking', description='Booking related endpoints.')
 
-@api.route('/<string:APIid>')
+@api.route('/<string:id>')
 class Booking(Resource):
-    def get(self, APIid):
-        booking = BookingModel.query.filter(BookingModel.APIid == APIid).first()
+    def get(self, id):
+        booking = BookingModel.query.filter(BookingModel.id == id).first()
         return booking_schema.dump(booking), HTTPStatus.OK
 
-    def delete(self, APIid):
-        booking = BookingModel.query.filter(BookingModel.APIid == APIid).first()
+    def delete(self, id):
+        booking = BookingModel.query.filter(BookingModel.id == id).first()
         if booking:
             db.session.delete(booking)
             db.session.commit()
