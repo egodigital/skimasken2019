@@ -84,7 +84,7 @@ class UserLogin(Resource):
     def post(self):
         args = login_parser.parse_args()
         user = UserModel.query.filter(UserModel.email == args["email"]).first()
-        if user is None and user.check_password(args["password"]):
+        if user is None or not user.check_password(args["password"]):
             return "", HTTPStatus.UNAUTHORIZED
         flask_login.login_user(user)
         return user_schema.dump(user), HTTPStatus.OK
