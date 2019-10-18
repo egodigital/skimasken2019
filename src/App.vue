@@ -10,12 +10,12 @@
             <v-list-item-title>Bookings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item :to="{ name: 'profile' }">
+        <v-list-item :to="{ name: 'vehicles' }">
           <v-list-item-action>
-            <v-icon>mdi-settings</v-icon>
+            <v-icon>mdi-car</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
+            <v-list-item-title>Vehicles</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -70,7 +70,7 @@ export default {
   },
   data() {
     return {
-      drawer: false
+      drawer: true
     };
   },
   methods: {
