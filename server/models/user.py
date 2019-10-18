@@ -1,6 +1,7 @@
 from server import db
 from server.extensions.marshmallow import ma
 from flask_restplus import reqparse
+from werkzeug import security
 
 user_parser = reqparse.RequestParser()
 user_parser.add_argument('email', type=str, required=True, location="json")
@@ -23,9 +24,12 @@ class UserModel(db.Model):
         self.is_authenticated = False
         self.email = email
         self.name = name
-        self.password = password
+        self.password = security.generate_password_hash(password)
         self.user_name = user_name
         self.environment_id = environment_id
+
+    def check_password(password):
+        return security.check_password_hash(self.password, password)
 
     def is_authenticated(self):
         return self.is_authenticated
@@ -43,5 +47,5 @@ class UserSchema(ma.ModelSchema):
     class Meta:
         model = UserModel
 
-user_schema = UserSchema()
-users_schema = UserSchema(many=True)
+user_schema = UserSchema(load_only=("password", ))
+users_schema = UserSchema(load_only=("password", ), many=True)
