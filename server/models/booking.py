@@ -25,7 +25,7 @@ class BookingModel(db.Model):
     status = db.Column(db.String, nullable=False)
     distance = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, start_time, end_time, Fuzzy, car_id, duration):
+    def __init__(self, start_time, end_time, Fuzzy, car_id, duration, status, id, distance):
         self.start_time = start_time
         self.end_time = end_time
         self.Fuzzy = Fuzzy
