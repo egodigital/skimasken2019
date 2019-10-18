@@ -15,11 +15,30 @@ class ArchievementChecker:
 
         #TODO score updaten
     def check_if_archieved(self, email, achievement_query_result):
+        experience_results=ExperienceModel.query.filter_by(email=email).first()
         for achievement in achievement_query_result:
             new_achievement_flag=False
             if achievement.type == "level":
-                if True:   #leveltype req
-                    new_achievement_flag=True
+                if achievement_query_result.level_type=="CHARGER":
+                    if achievement_query_result.level_req==experience_results.charger_level:
+                        achievement = achievement_assignment_schema.load({"email":email,"achievement_id":achievement.achievement_id}, session=self.session)
+                        db.session.add(achievement)
+                        new_achievement_flag=True
+                if achievement_query_result.level_type=="CAR_SHARER":
+                    if achievement_query_result.level_req==experience_results.car_sharer_level:
+                        achievement = achievement_assignment_schema.load({"email":email,"achievement_id":achievement.achievement_id}, session=self.session)
+                        db.session.add(achievement)
+                        new_achievement_flag=True
+                if achievement_query_result.level_type=="ECO_DRIVER":
+                    if achievement_query_result.level_req==experience_results.eco_driver_level:
+                        achievement = achievement_assignment_schema.load({"email":email,"achievement_id":achievement.achievement_id}, session=self.session)
+                        db.session.add(achievement)
+                        new_achievement_flag=True
+                if achievement_query_result.level_type=="RELIABILITY":
+                    if achievement_query_result.level_req==experience_results.reliability_level:
+                        achievement = achievement_assignment_schema.load({"email":email,"achievement_id":achievement.achievement_id}, session=self.session)
+                        db.session.add(achievement)
+                        new_achievement_flag=True
             if achievement.type == "simple":
                 #switch case mit jederm achievement
                 if False:
