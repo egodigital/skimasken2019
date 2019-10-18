@@ -7,14 +7,13 @@ from flask_restplus import reqparse
 booking_parser = reqparse.RequestParser()
 booking_parser.add_argument('start_time', type=datetime, required=True, location="json")
 booking_parser.add_argument('end_time', type=datetime, required=True, location="json")
-booking_parser.add_argument('start_time_fuzzy', type=datetime, required=False, location="json")
-booking_parser.add_argument('end_time_fuzzy', type=datetime, required=False, location="json")
 booking_parser.add_argument('id', type=int, required=True, location="json")
 booking_parser.add_argument('fuzzy', type=bool, required=True, location="json")
 booking_parser.add_argument('car_id', type=str, required=True, location="json")
 booking_parser.add_argument('duration', type=int, required=True, location="json")
 booking_parser.add_argument('status', type=str, required=True, location="json")
 booking_parser.add_argument('distance', type=int, required=True, location="json")
+
 
 class BookingModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -23,18 +22,20 @@ class BookingModel(db.Model):
     fuzzy = db.Column(db.Boolean, nullable=False)
     car_id = db.Column(db.String, nullable=False)
     duration = db.Column(db.Integer, nullable=False)
-    start_time_fuzzy = db.Column(db.DateTime, nullable=True)
-    end_time_fuzzy = db.Column(db.DateTime, nullable=True)
+    status = db.Column(db.String, nullable=False)
+    distance = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, start_time, end_time, Fuzzy, car_id, duration, id, start_time_fuzzy=None, end_time_fuzzy=None):
+
+    def __init__(self, start_time, end_time, Fuzzy, car_id, duration, status, id, distance):
+
         self.start_time = start_time
         self.end_time = end_time
         self.Fuzzy = Fuzzy
         self.car_id = car_id
         self.duration = duration
-        self.start_time_fuzzy = start_time_fuzzy
-        self.end_time_fuzzy = end_time_fuzzy
         self.id = id
+        self.status = status
+        self.distance = distance
 
 
 class BookingSchema(ma.ModelSchema):
