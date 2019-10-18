@@ -30,6 +30,7 @@ class Booking(Resource):
 @api.route('/<string:email>')
 class Bookingend(Resource):
     def get(self, id):
+        print("LOL AMK")
         self.check_achievements_for_user("fds")
         #booking = BookingModel.query.filter(BookingModel.id == id).first()
         #if booking:

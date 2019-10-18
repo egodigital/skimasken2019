@@ -8,6 +8,7 @@ def check_achievements_for_user(email):
     #db.session.commit()
     achievements_schema.dump(AchievementModel.query.all())
     print("hi")
+
     #for row in achievements:
     #    print("Name: ", row.achievement_id, "Address:", row.name, "Email:", row.score)
     #alle achievments suchen die man noch nicht hat
