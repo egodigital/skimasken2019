@@ -58,7 +58,7 @@ class VehicleList(Resource):
         db.session.commit()
         return booking_schema.dump(booking), HTTPStatus.CREATED
 
-@api.route('/string:vehicle_id')
+@api.route('/<string:vehicle_id>')
 class VehicleSingle(Resource):
     @flask_login.login_required
     @api.doc(responses={
