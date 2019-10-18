@@ -5,12 +5,16 @@ from http import HTTPStatus
 from flask import request
 from flask_restplus import Namespace
 from flask_restplus import Resource
+import flask_login
 
 from server.models.booking import BookingModel, booking_schema, bookings_schema, booking_parser
 from server.extensions.database import db
 
 log = logging.getLogger(__name__)
 api = Namespace('booking', description='Booking related endpoints.')
+
+def get_all_bookings():
+    return requests.get(current_app.config["API_BASE"] + f"/bookings", headers={"X-Api-Key": current_app.config["API_KEY"]}).json()
 
 @api.route('/<string:id>')
 class Booking(Resource):
@@ -27,13 +31,13 @@ class Booking(Resource):
 
 @api.route('/')
 class BookingList(Resource):
+    @flask_login.login_required
+    @api.doc(responses={
+        HTTPStatus.OK: 'Success',
+        HTTPStatus.UNAUTHORIZED: 'Not authorized'
+    })
     def get(self):
-        return bookings_schema.dump(BookingModel.query.all()), HTTPStatus.OK
-
-    @api.expect(booking_parser)
-    def post(self):
-        args = booking_parser.parse_args()
-        booking = booking_schema.load(booking_parser.parse_args(), session=db.session)
-        db.session.add(booking)
-        db.session.commit()
-        return booking_schema.dump(booking), HTTPStatus.CREATED
+        # get all public bookings in my environment
+        user = flask_login.current_user
+        bookings = BookingModel.query.filter(BookingModel.public == True, BookingModel.environment_id == user.environment_id).all()
+        return bookings_schema.dump(bookings), HTTPStatus.OK
