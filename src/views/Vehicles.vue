@@ -11,13 +11,14 @@
               <div>
                 <div class="mb-1">
                   <v-icon v-if="vehicle.status === 'available'" color="green">mdi-check-circle</v-icon>
+                  <v-icon v-else-if="vehicle.status === 'charging'" color="blue">mdi-ev-station</v-icon>
                   <v-icon v-else color="red">mdi-close-circle</v-icon>
                   {{ vehicle.licensePlate }}
                   <span class="font-weight-light font-italic">
                     {{ vehicle.model }}
                   </span>
                 </div>
-                <v-progress-linear value="12" color="cyan" rounded></v-progress-linear>
+                <v-progress-linear value="12" color="cyan" rounded :buffer-value="vehicle.status === 'charging' ? 12 : 0" :stream="vehicle.status === 'charging'" ></v-progress-linear>
               </div>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
