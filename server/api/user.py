@@ -1,16 +1,15 @@
 import requests
-import random
 import logging
 from http import HTTPStatus
-from flask import request
+from flask import request, current_app
 from flask_restplus import Namespace
 from flask_restplus import Resource
 from flask_restplus import reqparse
+import flask_login
 
 from server.models.user import UserModel, user_schema, users_schema, user_parser
 from server.extensions.database import db
 from server.extensions.login import login_manager
-import flask_login
 
 log = logging.getLogger(__name__)
 api = Namespace('user', description='User related enpoints.')
@@ -55,7 +54,10 @@ class UserList(Resource):
 
     @api.expect(user_parser)
     def post(self):
-        user = user_schema.load(user_parser.parse_args(), session=db.session)
+        args = user_parser.parse_args()
+        response = requests.get(current_app.config["API_BASE"] + "/environments", headers={"X-Api-Key": current_app.config["API_KEY"]})
+        args["environment_id"] = response.json()["data"][0]["id"] # Hardcoded
+        user = user_schema.load(args, session=db.session)
         db.session.add(user)
         db.session.commit()
         return user_schema.dump(user), HTTPStatus.CREATED
